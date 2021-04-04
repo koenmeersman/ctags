@@ -640,9 +640,13 @@ static void movePos(int amount)
   (((pos) == 0 || (!isalnum((buf)[(pos) - 1]) && (buf)[(pos) - 1] != '_')) && \
    (pos) < (lineLen) && \
    strncasecmp(&(buf)[(pos)], "--", strlen("--")) == 0)
-#define isAdaStringLiteral(buf, pos, lineLen)	\
-  ((((pos) < (lineLen - 1)) && ((buf)[(pos)] == '"') && ((buf)[(pos + 1)] != '"')) || \
-   (((pos) == (lineLen - 1)) && ((buf)[(pos)] == '"')))
+#define isAdaStringLiteral(buf, pos, inLiteral, lineLen)			\
+  (((inLiteral == true)  && ((pos) < (lineLen - 1)) && ((buf)[(pos)] == '"') && ((buf)[(pos + 1)] != '"')) || \
+   ((inLiteral == true)  && ((pos) == (lineLen - 1)) && ((buf)[(pos)] == '"')) || \
+   ((inLiteral == false) && ((pos) < (lineLen)) && ((buf)[(pos)] == '"')))
+/* inLiteral: A literal starts with the first '"' char, but when reading characters from a literal
+ *            we have to ignore all '""' occurences, as this is the '"'-literal and not the '"' char
+ *            indicating the end of from a literal. */
 
 static bool cmp(const char *buf, int len, const char *match)
 {
@@ -794,11 +798,11 @@ static void skipComments(void)
  * Return false if no string literal is found. */
 static bool skipStringLiteral(void)
 {
-  if (exception != EXCEPTION_EOF && isAdaStringLiteral(line, pos, lineLen))
+  if (exception != EXCEPTION_EOF && isAdaStringLiteral(line, pos, false, lineLen))
   {
     do {
       movePos(1);
-    } while (exception != EXCEPTION_EOF && !isAdaStringLiteral(line, pos, lineLen));
+    } while (exception != EXCEPTION_EOF && !isAdaStringLiteral(line, pos, true, lineLen));
 
     /* Go to the next char of " */
     movePos(1);
