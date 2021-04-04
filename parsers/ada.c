@@ -636,12 +636,13 @@ static void movePos(int amount)
 /* a macro for checking for comments... This isn't the same as the check in
  * cmp() because comments don't have to have whitespace or separation-type
  * characters following the "--" */
-#define isAdaComment(buf, pos, len) \
+#define isAdaComment(buf, pos, lineLen) \
   (((pos) == 0 || (!isalnum((buf)[(pos) - 1]) && (buf)[(pos) - 1] != '_')) && \
-   (pos) < (len) && \
+   (pos) < (lineLen) && \
    strncasecmp(&(buf)[(pos)], "--", strlen("--")) == 0)
-#define isAdaStringLiteral(buf, pos, len) \
-  (((pos) < (len)) && ((buf)[(pos)] == '"'))
+#define isAdaStringLiteral(buf, pos, lineLen)	\
+  ((((pos) < (lineLen - 1)) && ((buf)[(pos)] == '"') && ((buf)[(pos + 1)] != '"')) || \
+   (((pos) == (lineLen - 1)) && ((buf)[(pos)] == '"')))
 
 static bool cmp(const char *buf, int len, const char *match)
 {

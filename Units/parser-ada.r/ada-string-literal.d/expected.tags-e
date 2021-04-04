@@ -1,0 +1,24 @@
+
+input.adb,1322
+procedure Input isInput/p5,115
+  type String_T is new String;String_T/t7,135
+  function "+" (Left : String) return String_T is (String_T(Left));"+"/f8,166
+  function "+" (Left : String_T; Right : String) return String_T is (String_T(String (Left) & Ri"+"/f9,234
+  procedure String_Literals (S : String) isString_Literals/p11,338
+      type String_Literal_1_T is new String;String_Literal_1_T/t16,496
+      type String_Literal_2_T is new String;String_Literal_2_T/t23,704
+      type String_Literal_3_T is new String;String_Literal_3_T/t30,912
+      type String_Literal_4_T is new String;String_Literal_4_T/t37,1121
+      type String_Literal_5_T is new String;String_Literal_5_T/t44,1389
+      type String_Literal_6_T is new String;String_Literal_6_T/t51,1626
+      type String_Literal_7_T is new String;String_Literal_7_T/t58,1867
+      type String_Literal_8_T is new String;String_Literal_8_T/t67,2138
+  package Generic_G isGeneric_G/s76,2364
+    procedure Go;Go/p77,2387
+  package body Generic_G isGeneric_G/b80,2423
+    procedure Go isGo/p81,2451
+  package Impl isImpl/s87,2562
+    procedure Go;Go/p88,2580
+  package body Impl isImpl/b91,2611
+    package Generic1 is new Generic_G (Description => +"; " +":");Generic1/s92,2634
+    procedure Go renames Generic1.Go;Go/p93,2701
